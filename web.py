@@ -18,14 +18,3 @@ class QuotesSpider(scrapy.Spider):
                 '3 year annualised': response.xpath('//div[@id="overviewTrailingReturnsDiv"]//td[contains(.,"3 Years Annualised")]/../td[@class="value number"]/text()').get(),             
             }
 
-
-
-
-
-
-
-
-
-        # next_page = response.css('li.next a::attr("href")').get()
-        # if next_page is not None:
-        #     yield response.follow(next_page, self.parse)
