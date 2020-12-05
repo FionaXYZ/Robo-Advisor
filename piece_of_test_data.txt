@@ -1,5 +1,0 @@
-
-
-
-<tr><td class="mod-ui-table__cell--text"><span class="mod-ui-hide-small-below">Wednesday, December 02, 2020</span><span class="mod-ui-hide-medium-above">Wed, Dec 02, 2020</span></td><td>33.03</td><td>33.03</td><td>33.03</td><td>33.03</td><td><span class="mod-ui-hide-small-below">--</span><span class="mod-ui-hide-medium-above">--</span></td></tr>
-2020-12-03 15:21:20 [scrapy.core.scraper] DEBUG: Scraped from <200 https://markets.ft.com/data/equities/ajax/get-prices?startDate=2018%2F12%3F02&endDate=2020%2F12%2F03&symbol=535675951>
