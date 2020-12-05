@@ -9,15 +9,11 @@ class QuotesSpider(scrapy.Spider):
 
     def parse(self, response):
         htmlstr = response.json()['html']
-        print(htmlstr)
+        # print(htmlstr)
         data = Selector(text=htmlstr)
         # print(data)
 
         for tr in data.xpath('//tr'):
-            # tds = tr.xpath('td').getall()
-
-            # assert len(tds)==6, f"missing tds (shoud be 6, get {tds})"
-
             yield {
                 'name': tr.xpath('td/span/text()').get(),
                 'open': tr.xpath('td[2]//text()').get(),
