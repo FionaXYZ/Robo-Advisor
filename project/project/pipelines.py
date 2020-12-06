@@ -8,17 +8,20 @@
 from itemadapter import ItemAdapter
 import json
 
+from project.items import FundFTID
 
-class ProjectPipeline:
+class PipelineStorage:
+
     def open_spider(self, spider):
-        self.file = open('issue_no.jl', 'w')
+        self.file = open(f"{spider.settings['PROJ_OUTPUT_DIR']}/{spider.name}.jl", 'w')
 
     def close_spider(self, spider):
         self.file.close()
-    
-    
 
     def process_item(self, item, spider):
+        # if isinstance(item, FundFTID):
         line = json.dumps(ItemAdapter(item).asdict()) + "\n"
         self.file.write(line)
+        # else:
+        #     spider.log("xxx")
         return item

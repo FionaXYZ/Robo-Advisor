@@ -11,6 +11,8 @@ class QuotesSpider(scrapy.Spider):
         'https://www.morningstar.co.uk/uk/funds/snapshot/snapshot.aspx?id=F00000LWRT',
     ]
 
+
+
     def parse(self, response):
             yield {
                 'Name':response.xpath('//div[@id="snapshotTitleDiv"]//div[@class="snapshotTitleBox"]/h1/text()').get(),

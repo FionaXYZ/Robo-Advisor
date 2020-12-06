@@ -4,6 +4,8 @@ import json
 import re
 from scrapy import cmdline
 
+from project.items import FundFTID
+
 
 ##global variables
 with open('quotes.json') as f:
@@ -11,21 +13,24 @@ with open('quotes.json') as f:
 
 class QuotesSpider(scrapy.Spider):
     name = 'issue_no'
-    start_urls=[]
-    link_format='https://markets.ft.com/data/funds/tearsheet/summary?s='
-    for data in datas:
-        isin=data["ISIN"]
-        link=link_format+isin+':GBP'
-        start_urls.append(link)
 
-    def parse(self, response):
+
+    def start_requests(self):
+        for ISIN in self.settings['PROJ_USERINPUT_ISINS']:
+            yield scrapy.FormRequest(
+                f'https://markets.ft.com/data/funds/tearsheet/summary?s={ISIN}:GBP',
+                callback=self.parse_ftid
+            )
+
+    def parse_ftid(self, response):
         escaped = response.xpath("//div[@class='mod-overview-quote-app-overlay__container']/section[1]/@data-mod-config").get()
         str = html.unescape(escaped)
 
-        yield {
-            'ISIN': re.search('symbol\W+(\w*:\w+)', str).group(1),
-            'internal_id' : re.search('xid\W+(\w*)', str).group(1),      
-        } 
+        yield FundFTID(
+                ISIN=re.search(r'symbol\W+(\w*:\w+)', str).group(1),
+                FTID=re.search(r'xid\W+(\w*)', str).group(1),
+            )
+
 
 
 
