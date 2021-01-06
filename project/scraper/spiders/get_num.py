@@ -4,7 +4,7 @@ import html
 import re
 # from scrapy import cmdline
 
-from project.items import FundFTID
+from scraper.items import FundFTID
 
 
 ##global variables
