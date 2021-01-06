@@ -3,12 +3,12 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
-from scrapy import Item, Field
+# from scrapy import Item, Field
 
 
-class FundFTID(Item):
-    # define the fields for your item here like:
-    # name = Field()
-    ISIN = Field()
-    FTID = Field()
-    pass
+# class FundFTID(Item):
+#     # define the fields for your item here like:
+#     # name = Field()
+#     ISIN = Field()
+#     FTID = Field()
+#     pass

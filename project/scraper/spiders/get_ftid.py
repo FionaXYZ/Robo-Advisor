@@ -3,16 +3,11 @@ import html
 # import json
 import re
 # from scrapy import cmdline
+# from scraper.items import FundFTID
 
-from scraper.items import FundFTID
-
-
-##global variables
-# with open('quotes.json') as f:
-#   datas = json.load(f)
 
 class QuotesSpider(scrapy.Spider):
-    name = 'issue_no'
+    name = 'ftid_no'
 
 
     def start_requests(self):
@@ -26,10 +21,16 @@ class QuotesSpider(scrapy.Spider):
         escaped = response.xpath("//div[@class='mod-overview-quote-app-overlay__container']/section[1]/@data-mod-config").get()
         str = html.unescape(escaped)
 
-        yield FundFTID(
-                ISIN=re.search(r'symbol\W+(\w*:\w+)', str).group(1),
-                FTID=re.search(r'xid\W+(\w*)', str).group(1),
-            )
+        yield{
+            'ISIN':re.search(r'symbol\W+(\w*:\w+)', str).group(1),
+            'FTID':re.search(r'xid\W+(\w*)', str).group(1)
+        }
+
+        
+        # yield FundFTID(
+        #         ISIN=re.search(r'symbol\W+(\w*:\w+)', str).group(1),
+        #         FTID=re.search(r'xid\W+(\w*)', str).group(1),
+        #     )
 
 
 

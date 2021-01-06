@@ -2,7 +2,7 @@ import scrapy
 from scrapy.selector import Selector
 import json
 
-contents = open('data/issue_no.jl', "r").read() 
+contents = open('data/ftid_no.jl', "r").read() 
 datas = [json.loads(str(item)) for item in contents.strip().split('\n')]
 
 
@@ -12,10 +12,9 @@ class SpiderHistoricalPrice(scrapy.Spider):
     link_format='https://markets.ft.com/data/equities/ajax/get-historical-prices?startDate=2018%2F01%2F06&endDate=2021%2F01%2F06&symbol='
     for data in datas:
         internal_id=data["FTID"]
-        # isin=data["ISIN"]
         link=link_format+internal_id
         start_urls.append(link)
-        # print(isin)
+
 
     # def start_requests
 

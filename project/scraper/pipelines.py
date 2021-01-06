@@ -8,7 +8,7 @@
 from itemadapter import ItemAdapter
 import json
 
-from scraper.items import FundFTID
+# from scraper.items import FundFTID
 
 class PipelineStorage:
 
