@@ -2,7 +2,7 @@ import scrapy
 
 
 class QuotesSpider(scrapy.Spider):
-    name = 'quotes'
+    name = '3_year_ratio'
     start_urls = [
         'https://www.morningstar.co.uk/uk/funds/snapshot/snapshot.aspx?id=F00000X8RW',
         'https://www.morningstar.co.uk/uk/funds/snapshot/snapshot.aspx?id=F00000NGEL',

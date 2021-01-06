@@ -1,15 +1,15 @@
 import scrapy
 import html 
-import json
+# import json
 import re
-from scrapy import cmdline
+# from scrapy import cmdline
 
 from project.items import FundFTID
 
 
 ##global variables
-with open('quotes.json') as f:
-  datas = json.load(f)
+# with open('quotes.json') as f:
+#   datas = json.load(f)
 
 class QuotesSpider(scrapy.Spider):
     name = 'issue_no'
