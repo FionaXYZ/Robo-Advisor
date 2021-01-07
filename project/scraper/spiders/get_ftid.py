@@ -22,7 +22,7 @@ class QuotesSpider(scrapy.Spider):
         str = html.unescape(escaped)
 
         yield{
-            'ISIN':re.search(r'symbol\W+(\w*:\w+)', str).group(1),
+            'ISIN':re.search(r'symbol\W+(\w*)', str).group(1),
             'FTID':re.search(r'xid\W+(\w*)', str).group(1)
         }
 
