@@ -5,6 +5,8 @@ import re
 # from scrapy import cmdline
 # from scraper.items import FundFTID
 
+#step 3 getting down financial time website id to to search for encrypted website url
+#going through the website on spiders.py
 
 class QuotesSpider(scrapy.Spider):
     name = 'ftid_no'

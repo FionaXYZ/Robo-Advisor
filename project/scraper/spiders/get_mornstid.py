@@ -5,6 +5,7 @@ from scrapy.selector import Selector
 #step 1
 #getting morningstar number to search for encrypted website url
 #going through the websites in web.py
+
 class QuotesSpider(scrapy.Spider):
     name = 'mornst_id'
 

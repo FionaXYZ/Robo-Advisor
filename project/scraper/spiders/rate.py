@@ -22,15 +22,22 @@ class QuotesSpider(scrapy.Spider):
 
 
     def parse(self, response):
+
+        morn_id=response.url.split("=")[-2][:-4]
+        for data in datas:
+            if data["mornst_id"]== morn_id:
+                isin=data["ISIN"]
+                break
+
         if response.url.split("=")[-1]=="1":
             yield {
-                'mornst_id':response.url.split("=")[-2][:-4],
-                '3_year_annualised': response.xpath('//div[@id="returnsTrailingDiv"]//td[contains(.,"3 Years Annualised")]/../td[@class="col2 value number"]/text()').get(),             
+                'ISIN':isin,
+                '3_year_annualised': response.xpath('//div[@id="returnsTrailingDiv"]//td[contains(.,"3 Years Annualised")]/../td[@class="col2 value number"]/text()').get()           
             }
         elif response.url.split("=")[-1]=="2":
             yield {
-                'mornst_id':response.url.split("=")[-2][:-4],
-                '3_year_sd': response.xpath('//div[@id="ratingRiskLeftDiv"]//td[contains(.,"3-Yr Std Dev")]/../td[@class="value number"]/text()').get(),             
+                'ISIN':isin,
+                '3_year_sd': response.xpath('//div[@id="ratingRiskLeftDiv"]//td[contains(.,"3-Yr Std Dev")]/../td[@class="value number"]/text()').get()            
             }
 
 
