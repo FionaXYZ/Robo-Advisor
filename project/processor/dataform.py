@@ -10,9 +10,10 @@ datas_rate = [json.loads(str(item)) for item in contents_rate.strip().split('\n'
 contents_his = open('data/historical.jl', "r").read() 
 datas_his = [json.loads(str(item)) for item in contents_his.strip().split('\n')]
 
-prices={isin["ISIN"]:[] for isin in datas_mornid}
 
 #python date filtering
+prices={isin["ISIN"]:[] for isin in datas_mornid}
+
 def filter(prices,datas_his,start,end):
     for data in datas_his:
         data["Date"]=datetime.strptime(data["Date"], "%A, %B %d, %Y")
@@ -20,14 +21,16 @@ def filter(prices,datas_his,start,end):
             continue
         prices[data["ISIN"]].append((data["Date"],data["Price"]))
 
-
 filter(prices,datas_his,"2018/01/08","2021/01/08")
 for isin in prices:
     sorted(prices[isin], key = lambda t: t[0])
     # sorted() function best case complexity is O(n)
+    #prices are ordered according to descending order of dates e.g.2021/01/08 - 2018/01/08
 
-modified_prices={isin["ISIN"]:[] for isin in datas_mornid}
+
 #imputation
+modified_prices={isin["ISIN"]:[] for isin in datas_mornid}
+
 def impute(modified_prices,prices):
     for isin in prices:
         for pair in range(len(prices[isin])-1):
@@ -45,8 +48,8 @@ def impute(modified_prices,prices):
                     diff-=1
         modified_prices[isin].append(float(prices[isin][-1][1]))
 
-
 impute(modified_prices,prices)
+
 
 #find common start and end date
 start=max(prices[isin][-1][0] for isin in prices)
@@ -59,9 +62,7 @@ for isin in prices:
 
 
 
-
-
-# processing the data looks like [{'ISIN': '', '3_year_annalised': '', '3_year_sd': ''},{"prices":[]}]
+#data output looks like {data:[{'ISIN': '', '3_year_annalised': '', '3_year_sd': '',"prices":[]},...],meta:{'start':'','end:''}}
 process=[]
 for data_m in datas_mornid:
     process.append({"ISIN":data_m["ISIN"]})
@@ -73,12 +74,12 @@ for data in process:
                 data["3_year_annalised"]=data_r["3_year_annualised"]
             else:
                 data["3_year_sd"]=data_r["3_year_sd"]
-    for isin in modified_prices:
-        if data["ISIN"]==isin:
-            data["prices"]=modified_prices[isin]
-            break
-output={"data":process,"meta":{"start":datetime.strftime(start,"%Y/%m/%d"),"end":datetime.strftime(end,"%Y/%m/%d")}}
+    data["prices"]=modified_prices[data["ISIN"]]
+        
+output={"data":process,"meta":{"end":datetime.strftime(end,"%Y/%m/%d"),"start":datetime.strftime(start,"%Y/%m/%d")}}
 
+
+#output file
 with open('data_out/model_input.json', 'w') as outfile:
     json.dump(output, outfile)
 
