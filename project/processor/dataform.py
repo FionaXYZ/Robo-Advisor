@@ -61,7 +61,8 @@ for isin in prices:
     modified_prices[isin]=modified_prices[isin][diff_end:len(modified_prices[isin])-diff_start]
 
 
-
+#calculate return between days 
+#gap can be changed to generate different rates arrays
 rates={isin["ISIN"]:[] for isin in datas_mornid}
 
 def return_rate(modified_prices,rates,gap):
