@@ -62,6 +62,17 @@ for isin in prices:
 
 
 
+rates={isin["ISIN"]:[] for isin in datas_mornid}
+
+def return_rate(modified_prices,rates,gap):
+    for isin in modified_prices: 
+        for step in range(0,len(modified_prices[isin])-gap,gap):
+            rate=modified_prices[isin][step]/modified_prices[isin][step+gap]
+            rates[isin].append(round(rate,4))
+
+return_rate(modified_prices,rates,1)
+
+
 #data output looks like {data:[{'ISIN': '', '3_year_annalised': '', '3_year_sd': '',"prices":[]},...],meta:{'start':'','end:''}}
 process=[]
 for data_m in datas_mornid:
@@ -74,7 +85,7 @@ for data in process:
                 data["3_year_annalised"]=data_r["3_year_annualised"]
             else:
                 data["3_year_sd"]=data_r["3_year_sd"]
-    data["prices"]=modified_prices[data["ISIN"]]
+    data["rates"]=rates[data["ISIN"]]
         
 output={"data":process,"meta":{"end":datetime.strftime(end,"%Y/%m/%d"),"start":datetime.strftime(start,"%Y/%m/%d")}}
 
