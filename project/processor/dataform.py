@@ -85,7 +85,7 @@ for data in process:
             if "3_year_annualised" in data_r:
                 data["3_year_annalised"]=data_r["3_year_annualised"]
             else:
-                data["3_year_sd"]=data_r["3_year_sd"]
+                data["3_year_sd"]=round(float(data_r["3_year_sd"].strip('%'))/100,4)
     data["rates"]=rates[data["ISIN"]]
         
 output={"data":process,"meta":{"end":datetime.strftime(end,"%Y/%m/%d"),"start":datetime.strftime(start,"%Y/%m/%d")}}
