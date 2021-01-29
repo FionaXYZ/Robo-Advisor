@@ -2,7 +2,7 @@
     "data": [
         {
             "ISIN": "LU0712206050",
-            "3_year_annalised": "0.74",
+            "3_year_annalised": 0.74,
             "3_year_sd": 0.1814,
             "rates": [
                 1.0146,
@@ -1105,7 +1105,7 @@
         {
             "ISIN": "LU1053186349",
             "3_year_sd": 0.1314,
-            "3_year_annalised": "14.10",
+            "3_year_annalised": 14.1,
             "rates": [
                 0.9985,
                 0.9991,
@@ -2206,7 +2206,7 @@
         },
         {
             "ISIN": "IE00B530JS22",
-            "3_year_annalised": "6.89",
+            "3_year_annalised": 6.89,
             "3_year_sd": 0.1501,
             "rates": [
                 1.0018,
@@ -3309,7 +3309,7 @@
         {
             "ISIN": "IE00B3VNP587",
             "3_year_sd": 0.1484,
-            "3_year_annalised": "10.41",
+            "3_year_annalised": 10.41,
             "rates": [
                 1.0047,
                 1.003,
@@ -4410,7 +4410,7 @@
         },
         {
             "ISIN": "LU1041109759",
-            "3_year_annalised": "10.20",
+            "3_year_annalised": 10.2,
             "3_year_sd": 0.1463,
             "rates": [
                 0.9984,
