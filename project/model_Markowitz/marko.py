@@ -42,16 +42,23 @@ def make_eq(target,R):
 def summ(w):
     return 1.0 - np.sum(w)
 
-# init=np.random.rand(n_assets)
-# w0 = init/sum(init)
-w0 = [1/n_assets]*n_assets
-w0=np.array(w0)
+init=np.random.rand(n_assets)
+w0 = init/sum(init)
+# w0 = [1/n_assets]*n_assets
+# w0=np.array(w0)
 
 bounds = ((0.0, 1.0),) * len(returns)
 
-weights = minimize(make_marko(model_input), w0, method='SLSQP', constraints=({'type': 'eq', 'fun': make_eq(10,returns)},{'type': 'eq', 'fun': summ}),bounds=bounds)
-# print(10)
-# print(weights.x)
+def optimal(target):
+    weights = minimize(make_marko(model_input), w0, method='SLSQP', constraints=({'type': 'eq', 'fun': make_eq(target,returns)},{'type': 'eq', 'fun': summ}),bounds=bounds)
+    return weights
 
+def frontier(targets):
+    frontier = []
+    for t in targets:
+        frontier.append(optimal(t))
+    return frontier
 
-
+target_returns=[2,4,6,7,8,9,10,10.5,11,11.5,12,12.5,13,13.5,14]
+effcient_frontier=frontier(target_returns)
+print(effcient_frontier)
