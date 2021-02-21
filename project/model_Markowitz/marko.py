@@ -1,7 +1,8 @@
 import numpy as np
 import json
 import math
-from scipy.optimize import minimize
+# from scipy.optimize import minimize
+import cvxpy as cp
 
 with open('data_out/model_input.json') as json_file:
     data = json.load(json_file)
@@ -30,35 +31,33 @@ model_input=mod*covMatrix*np.array(mod)[np.newaxis].T
 n_assets=len(returns)
 returns = np.array(returns)
 
+# using scipy.optimize library
+# def make_marko(C):
+#     def marko(w):
+#         return w.dot(C.dot(w))
+#     return  marko
+# def make_eq(target,R):
+#     return lambda w: target-w.dot(R)
+# def summ(w):
+#     return 1.0 - np.sum(w)
+# init=np.random.rand(n_assets)
+# w0 = init/sum(init)
+# bounds = ((0.0, 1.0),) * len(returns)
+# def optimal(target):
+#     weights = minimize(make_marko(model_input), w0, method='SLSQP', constraints=({'type': 'eq', 'fun': make_eq(target,returns)},{'type': 'eq', 'fun': summ}),bounds=bounds)
+#     return weights
 
-def make_marko(C):
-    def marko(w):
-        return w.dot(C.dot(w))
-    return  marko
 
-def make_eq(target,R):
-    return lambda w: target-w.dot(R)
-
-def summ(w):
-    return 1.0 - np.sum(w)
-
-init=np.random.rand(n_assets)
-w0 = init/sum(init)
-# w0 = [1/n_assets]*n_assets
-# w0=np.array(w0)
-
-bounds = ((0.0, 1.0),) * len(returns)
-
-def optimal(target):
-    weights = minimize(make_marko(model_input), w0, method='SLSQP', constraints=({'type': 'eq', 'fun': make_eq(target,returns)},{'type': 'eq', 'fun': summ}),bounds=bounds)
-    return weights
-
-def frontier(targets):
-    frontier = []
-    for t in targets:
-        frontier.append(optimal(t))
-    return frontier
-
+# using cvxpy library
 target_returns=[2,4,6,7,8,9,10,10.5,11,11.5,12,12.5,13,13.5,14]
-effcient_frontier=frontier(target_returns)
-print(effcient_frontier)
+res=[]
+
+# using cvxpy library
+for target in target_returns:
+    w = cp.Variable(n_assets)
+    prob = cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)), [w.T * returns >= target, cp.sum(w) == 1, w>=0])
+    prob.solve()
+
+    res.append(prob.value)
+    print(w.value)
+print(res)
