@@ -49,15 +49,16 @@ returns = np.array(returns)
 
 
 # using cvxpy library
+print(f"maximum return you can choose is {max(returns)}")
 target_returns=[2,4,6,7,8,9,10,10.5,11,11.5,12,12.5,13,13.5,14]
 res=[]
 
 # using cvxpy library
 for target in target_returns:
     w = cp.Variable(n_assets)
-    prob = cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)), [w.T * returns >= target, cp.sum(w) == 1, w>=0])
-    prob.solve()
-
-    res.append(prob.value)
+    marko = cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)), [w.T * returns >= target, cp.sum(w) == 1, w>=0])
+    marko.solve()
+    
+    print(target)
     print(w.value)
-print(res)
+    print(marko.value)
