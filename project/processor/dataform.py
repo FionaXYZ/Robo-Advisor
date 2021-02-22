@@ -63,7 +63,7 @@ for isin in prices:
 
 #calculate return between days 
 #gap can be changed to generate different rates arrays
-rates={isin["ISIN"]:[] for isin in datas_mornid}
+
 
 def return_rate(modified_prices,rates,gap):
     for isin in modified_prices: 
@@ -71,7 +71,25 @@ def return_rate(modified_prices,rates,gap):
             rate=modified_prices[isin][step]/modified_prices[isin][step+gap]
             rates[isin].append(round(rate,4))
 
-return_rate(modified_prices,rates,1)
+rates_1={isin["ISIN"]:[] for isin in datas_mornid}
+rates_2={isin["ISIN"]:[] for isin in datas_mornid}
+rates_5={isin["ISIN"]:[] for isin in datas_mornid}
+rates_7={isin["ISIN"]:[] for isin in datas_mornid}
+rates_10={isin["ISIN"]:[] for isin in datas_mornid}
+rates_15={isin["ISIN"]:[] for isin in datas_mornid}
+rates_20={isin["ISIN"]:[] for isin in datas_mornid}
+rates_30={isin["ISIN"]:[] for isin in datas_mornid}
+
+
+return_rate(modified_prices,rates_1,1)
+return_rate(modified_prices,rates_2,2)
+return_rate(modified_prices,rates_5,5)
+return_rate(modified_prices,rates_7,7)
+return_rate(modified_prices,rates_10,10)
+return_rate(modified_prices,rates_15,15)
+return_rate(modified_prices,rates_20,20)
+return_rate(modified_prices,rates_30,30)
+
 
 
 #data output looks like {data:[{'ISIN': '', '3_year_annalised': '', '3_year_sd': '',"prices":[]},...],meta:{'start':'','end:''}}
@@ -86,7 +104,14 @@ for data in process:
                 data["3_year_annalised"]=float(data_r["3_year_annualised"])
             else:
                 data["3_year_sd"]=round(float(data_r["3_year_sd"].strip('%'))/100,4)
-    data["rates"]=rates[data["ISIN"]]
+    data["rates_1"]=rates_1[data["ISIN"]]
+    data["rates_2"]=rates_2[data["ISIN"]]
+    data["rates_5"]=rates_5[data["ISIN"]]
+    data["rates_7"]=rates_7[data["ISIN"]]
+    data["rates_10"]=rates_10[data["ISIN"]]
+    data["rates_15"]=rates_15[data["ISIN"]]
+    data["rates_20"]=rates_20[data["ISIN"]]
+    data["rates_30"]=rates_30[data["ISIN"]]
         
 output={"data":process,"meta":{"end":datetime.strftime(end,"%Y/%m/%d"),"start":datetime.strftime(start,"%Y/%m/%d")}}
 
