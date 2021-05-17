@@ -67,7 +67,7 @@ for isin in prices:
 
 def return_rate(modified_prices,rates,gap):
     for isin in modified_prices: 
-        for step in range(0,len(modified_prices[isin])-gap,gap):
+        for step in range(0,len(modified_prices[isin])-gap):
             rate=(modified_prices[isin][step]/modified_prices[isin][step+gap])**(1/gap)
             rates[isin].append(round(rate,4))
 

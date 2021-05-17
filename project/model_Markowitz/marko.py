@@ -35,9 +35,9 @@ for rate in ret:
     for datas in data["data"]:
         ret[rate].append(datas[rate])
     ret[rate]=np.array(ret[rate])
-    covMatrix=np.cov(ret[rate],bias=True)
+    covMatrix=np.cov(ret[rate])
     mod=std/(np.diag(covMatrix)**0.5)
-    model_input=mod*covMatrix*np.array(mod)[np.newaxis].T
+    model_input=np.matmul(np.matmul(np.diag(mod),covMatrix),np.diag(mod))
     w=cp.Variable(n_assets)
     marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),[w.T*returns>=mini,cp.sum(w) == 1,w>=0])
     marko.solve()
@@ -52,15 +52,16 @@ while mini<maxi:
     mini+=0.25
 target_returns.append(maxi)
 
-target_returns=[10,10.25,10.5,10.75,11,11.25,11.5,11.75,12,12.25,12.5,12.75,13,13.25,13.5,13.75,14]
+
+# target_returns=[10.25,10.5,10.75,11,11.25,11.5,11.75,12,12.25,12.5,12.75,13,13.25,13.5,13.75,14]
 # Get and Draw efficient frontier for different sampling rate
 for rate in rates:
     for datas in data["data"]:
         rates[rate].append(datas[rate])
     rates[rate]=np.array(rates[rate])
-    covMatrix=np.cov(rates[rate],bias=True)
+    covMatrix=np.cov(rates[rate])
     mod=std/(np.diag(covMatrix)**0.5)
-    model_input=mod*covMatrix*np.array(mod)[np.newaxis].T
+    model_input=np.matmul(np.matmul(np.diag(mod),covMatrix),np.diag(mod))
     for target in target_returns:
         w=cp.Variable(n_assets)
         marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),[w.T*returns>=target,cp.sum(w) == 1,w>=0])
