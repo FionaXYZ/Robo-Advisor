@@ -22,34 +22,42 @@ for datas in data["data"]:
     std.append(datas["3_year_sd"])
     returns.append(datas["3_year_annalised"])
 
+# adding risk free asset to the model
+rf=0.0045
+returns.append(rf)
 n_assets=len(returns)
 returns=np.array(returns)
 maxi=max(returns)
 print(f"maximum return you can choose is {maxi}")
+zeros=np.array([np.zeros((n_assets-1,), dtype=int)])
+zeros_vertical=np.array([np.zeros((n_assets,),dtype=int)])
 
 # find minimum return(at minimum variance set)
-mini=min(returns)
-ret={key:[] for key in category}
-minimum=[]
-for rate in ret:
-    for datas in data["data"]:
-        ret[rate].append(datas[rate])
-    ret[rate]=np.array(ret[rate])
-    covMatrix=np.cov(ret[rate])
-    mod=std/(np.diag(covMatrix)**0.5)
-    model_input=np.matmul(np.matmul(np.diag(mod),covMatrix),np.diag(mod))
-    w=cp.Variable(n_assets)
-    marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),[w.T*returns>=mini,cp.sum(w) == 1,w>=0])
-    marko.solve()
-    minimum.append(np.dot(w.value,returns))
-print(minimum)
-mini=np.median(np.array(minimum))
+# mini=min(returns)
+# ret={key:[] for key in category}
+# minimum=[]
+# for rate in ret:
+#     for datas in data["data"]:
+#         ret[rate].append(datas[rate])
+#     ret[rate]=np.array(ret[rate])
+#     covMatrix=np.cov(ret[rate])
+#     mod=std/(np.diag(covMatrix)**0.5)
+#     model_input=np.matmul(np.matmul(np.diag(mod),covMatrix),np.diag(mod))
+#     model_input=np.append(model_input, zeros, axis=0)
+#     model_input=np.append(model_input, zeros_vertical.transpose(), axis=1)
+#     w=cp.Variable(n_assets)
+#     marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),[w.T*returns>=mini,cp.sum(w) == 1,w>=0])
+#     marko.solve()
+#     minimum.append(np.dot(w.value,returns))
+# print(minimum)
+# mini=np.median(np.array(minimum))
+mini=rf
 print(f"The minimum return available {mini}")
 # find the returns on efficient frontier
 target_returns=[]
 while mini<maxi:
     target_returns.append(mini)
-    mini+=0.25
+    mini+=0.0025
 target_returns.append(maxi)
 
 
@@ -62,6 +70,8 @@ for rate in rates:
     covMatrix=np.cov(rates[rate])
     mod=std/(np.diag(covMatrix)**0.5)
     model_input=np.matmul(np.matmul(np.diag(mod),covMatrix),np.diag(mod))
+    model_input=np.append(model_input, zeros, axis=0)
+    model_input=np.append(model_input, zeros_vertical.transpose(), axis=1)
     for target in target_returns:
         w=cp.Variable(n_assets)
         marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),[w.T*returns>=target,cp.sum(w) == 1,w>=0])

@@ -99,7 +99,7 @@ for data in process:
     for data_r in datas_rate:
         if data_r["ISIN"]==data["ISIN"]:
             if "3_year_annualised" in data_r:
-                data["3_year_annalised"]=float(data_r["3_year_annualised"])
+                data["3_year_annalised"]=float(data_r["3_year_annualised"])/100
             else:
                 data["3_year_sd"]=round(float(data_r["3_year_sd"].strip('%'))/100,4)
     for rate in rates:
