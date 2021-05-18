@@ -32,25 +32,7 @@ print(f"maximum return you can choose is {maxi}")
 zeros=np.array([np.zeros((n_assets-1,), dtype=int)])
 zeros_vertical=np.array([np.zeros((n_assets,),dtype=int)])
 
-# find minimum return(at minimum variance set)
-# mini=min(returns)
-# ret={key:[] for key in category}
-# minimum=[]
-# for rate in ret:
-#     for datas in data["data"]:
-#         ret[rate].append(datas[rate])
-#     ret[rate]=np.array(ret[rate])
-#     covMatrix=np.cov(ret[rate])
-#     mod=std/(np.diag(covMatrix)**0.5)
-#     model_input=np.matmul(np.matmul(np.diag(mod),covMatrix),np.diag(mod))
-#     model_input=np.append(model_input, zeros, axis=0)
-#     model_input=np.append(model_input, zeros_vertical.transpose(), axis=1)
-#     w=cp.Variable(n_assets)
-#     marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),[w.T*returns>=mini,cp.sum(w) == 1,w>=0])
-#     marko.solve()
-#     minimum.append(np.dot(w.value,returns))
-# print(minimum)
-# mini=np.median(np.array(minimum))
+
 mini=rf
 print(f"The minimum return available {mini}")
 # find the returns on efficient frontier
@@ -61,7 +43,6 @@ while mini<maxi:
 target_returns.append(maxi)
 
 
-# target_returns=[10.25,10.5,10.75,11,11.25,11.5,11.75,12,12.25,12.5,12.75,13,13.25,13.5,13.75,14]
 # Get and Draw efficient frontier for different sampling rate
 for rate in rates:
     for datas in data["data"]:
