@@ -55,7 +55,7 @@ for rate in rates:
     model_input=np.append(model_input, zeros_vertical.transpose(), axis=1)
     for target in target_returns:
         w=cp.Variable(n_assets)
-        marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),[w.T*returns>=target,cp.sum(w) == 1,w>=0])
+        marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),[w.T@returns>=target,cp.sum(w) == 1,w>=0])
         marko.solve()
         res[rate]["weights"].append(w.value)
         res[rate]["variance"].append(marko.value)
