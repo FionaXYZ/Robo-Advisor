@@ -28,13 +28,13 @@ returns.append(rf)
 n_assets=len(returns)
 returns=np.array(returns)
 maxi=np.max(returns)
-print(f"maximum return you can choose is {maxi}")
+print(f"maximum possible return you can choose is {maxi}")
 zeros=np.array([np.zeros((n_assets-1,), dtype=int)])
 zeros_vertical=np.array([np.zeros((n_assets,),dtype=int)])
 
 
 mini=rf
-print(f"The minimum return available {mini}")
+print(f"The possible minimum return available {mini}")
 # find the returns on efficient frontier
 target_returns=[]
 while mini<maxi:
@@ -55,15 +55,25 @@ for rate in rates:
     model_input=np.append(model_input, zeros_vertical.transpose(), axis=1)
     for target in target_returns:
         w=cp.Variable(n_assets)
-        marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),[w.T@returns>=target,cp.sum(w) == 1,w>=0])
+        constraints=[w.T@returns>=target,cp.sum(w)==1,w>=0]
+        constraints.extend([w[0]>=0.1])
+        marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),constraints)
         marko.solve()
-        res[rate]["weights"].append(w.value)
+        if w.value is None:
+            res[rate]["weights"].append([np.NAN]*n_assets)
+        else:
+            maxi=target
+            res[rate]["weights"].append(w.value)
+        if target==target_returns[0]:
+            mini=np.around(np.dot(w.value,returns),decimals=4)
         res[rate]["variance"].append(marko.value)
+print(f"The maximum return available {maxi}")
+print(f"The minimum return available {mini}")
 
 for rate in res:
     WCW=res[rate]["variance"]
     plt.plot(WCW, target_returns,'o',label=f'{rate}')
-
+# print(res)
 
 plt.xlabel('WCW')
 plt.ylabel('returns')
