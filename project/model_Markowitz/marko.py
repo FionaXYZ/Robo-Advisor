@@ -38,7 +38,7 @@ print(f"The minimum return available {mini}")
 # find the returns on efficient frontier
 target_returns=[]
 while mini<maxi:
-    target_returns.append(mini)
+    target_returns.append(round(mini,4))
     mini+=0.0025
 target_returns.append(maxi)
 
@@ -82,12 +82,13 @@ weights_avg={key:{"mean":[],"difference":[]} for key in target_returns}
 for ret in target_returns:
     diff=[]
     mean=np.mean(weights[ret]["weights"],axis=0)
-    weights_avg[ret]["mean"].append(mean)
+    weights_avg[ret]["mean"].append(np.absolute(np.around(mean, decimals=4)))
     max=np.amax(weights[ret]["weights"],axis=0)
     min=np.amin(weights[ret]["weights"],axis=0)
     diff.append(max-mean)
     diff.append(mean-min)
-    weights_avg[ret]["difference"].append(np.amax(diff,axis=0))
+    var=np.around(np.amax(diff,axis=0),decimals=4)
+    weights_avg[ret]["difference"].append(var)
 
 print(weights_avg)
 
