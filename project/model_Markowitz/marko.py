@@ -27,7 +27,7 @@ rf=0.0045
 returns.append(rf)
 n_assets=len(returns)
 returns=np.array(returns)
-maxi=max(returns)
+maxi=np.max(returns)
 print(f"maximum return you can choose is {maxi}")
 zeros=np.array([np.zeros((n_assets-1,), dtype=int)])
 zeros_vertical=np.array([np.zeros((n_assets,),dtype=int)])
