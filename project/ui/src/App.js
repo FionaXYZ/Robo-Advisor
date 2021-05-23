@@ -46,18 +46,23 @@ export default function AssetSelection() {
       setIsins(newArray);
     }
   }
+  const handleSubmit = event => {
+    event.preventDefault();
+    alert('You have submitted the form.')
+  }
 
 
   console.log(isins)
   
   return (
     <>
-    <form className={classes.root} noValidate autoComplete="off">
+    <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
     {isins.map((isin,i)=>
         (<ISINOption isinObj={isin} setIsinObj={factoryUpdateArray(isins,i)} deleteIsin={()=>{DeleteIsin(isins,i)}} key={i}/> 
     ))}
 
     <Button onClick={()=>{NewIsin(isins)}} color="primary" variant="contained">Add New ISIN</Button>
+    <Button type="submit" variant="outlined" color="primary">Submit</Button>
     </form>
     </>
   )
