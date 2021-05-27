@@ -75,14 +75,14 @@ def return_rate(modified_prices,rates,gap):
 
 # input sampling frequency in days
 
-print("Choose a sampling frequency(besides 1,2,5,7,10,15,20,30)")
+print("Choose a sampling frequency(besides 2,5,7,10,15,20,30,60)")
 # Do not always trust uer input; add constraints here !
 rate_input=int(input())
 
 
 
 # name of sampling 
-category=[1,2,5,7,10,15,20,30]
+category=[2,5,7,10,15,20,30,60]
 category.append(rate_input)
 rates={key:{isin["ISIN"]:[] for isin in datas_mornid} for key in category}
 for rate in rates:

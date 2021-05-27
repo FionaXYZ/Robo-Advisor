@@ -87,33 +87,38 @@ for ret in target_returns:
         weights[ret]["weights"].append(res[rate]["weights"][number])
     number=number+1
 
-weights_avg={key:{"mean":[],"difference":[]} for key in target_returns}  
+weights_avg={key:{"mean":[],"max":[],"min":[]} for key in target_returns}  
 
 for ret in target_returns:
-    diff=[]
     mean=np.mean(weights[ret]["weights"],axis=0)
-    weights_avg[ret]["mean"].append(np.absolute(np.around(mean, decimals=4)))
+    weights_avg[ret]["mean"].append(np.around(mean, decimals=4))
     max=np.amax(weights[ret]["weights"],axis=0)
     min=np.amin(weights[ret]["weights"],axis=0)
-    diff.append(max-mean)
-    diff.append(mean-min)
-    var=np.around(np.amax(diff,axis=0),decimals=4)
-    weights_avg[ret]["difference"].append(var)
-
-print(weights_avg)
+    weights_avg[ret]["max"].append(np.around(max, decimals=4))
+    weights_avg[ret]["min"].append(np.around(min, decimals=4))
+# print(weights_avg)
 
 asset=0
 allocation=[]
+max_array=[]
+min_array=[]
 while asset<n_assets:
     weight=[]
+    ma=[]
+    mi=[]
     for ret in target_returns: 
         weight.append(weights_avg[ret]["mean"][0][asset])
+        ma.append(weights_avg[ret]["max"][0][asset])
+        mi.append(weights_avg[ret]["min"][0][asset])
     asset=asset+1
     allocation.append(weight)
+    max_array.append(ma)
+    min_array.append(mi)
 
 number=0
-for asset in allocation:
-    plt.plot(target_returns,asset,label=f'w{number}')
+for asset in range(len(allocation)):
+    plt.plot(target_returns,allocation[asset],label=f'w{number}')
+    plt.fill_between(target_returns, max_array[asset], min_array[asset],alpha=0.5)
     number=number+1
 
 
@@ -121,4 +126,3 @@ plt.xlabel('returns')
 plt.ylabel('weights')
 plt.legend()
 plt.show()
-
