@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 contents_mornid = open('data/mornst_id.jl', "r").read() 
 datas_mornid = [json.loads(str(item)) for item in contents_mornid.strip().split('\n')]
@@ -17,15 +18,19 @@ prices={isin["ISIN"]:[] for isin in datas_mornid}
 def filter(prices,datas_his,start,end):
     for data in datas_his:
         data["Date"]=datetime.strptime(data["Date"], "%A, %B %d, %Y")
-        if data["Date"]<datetime.strptime(start,"%Y/%m/%d") or data["Date"]>datetime.strptime(end,"%Y/%m/%d"):
+        if data["Date"]<start or data["Date"]>end:
             continue
         prices[data["ISIN"]].append((data["Date"],data["Price"]))
 
-filter(prices,datas_his,"2018/01/08","2021/01/08")
+start_date=datetime.strptime("2018/01/08","%Y/%m/%d")
+end_date=datetime.strptime("2021/01/08","%Y/%m/%d")
+# start_date=datetime.today()-relativedelta(years=3)
+# end_date=datetime.today()
+filter(prices,datas_his,start_date,end_date)
 for isin in prices:
     sorted(prices[isin], key = lambda t: t[0])
     # sorted() function best case complexity is O(n)
-    #prices are ordered according to descending order of dates e.g.2021/01/08 - 2018/01/08
+    #prices are ordered according to descending order of dates from current date to history date for example(e.g.2021/01/08 - 2018/01/08 )
 
 
 #imputation
