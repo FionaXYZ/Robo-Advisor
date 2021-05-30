@@ -7,6 +7,12 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import json
+
+with open('backend/user_input.json') as json_file:
+   data=json.load(json_file)
+
+
 BOT_NAME = 'scraper'
 
 SPIDER_MODULES = ['scraper.spiders']
@@ -93,4 +99,9 @@ PROJ_OUTPUT_DIR='./data'
 
 PROJ_DATE_START=''
 PROJ_DATE_END=''
-PROJ_USERINPUT_ISINS=['LU1053186349', 'IE00B3VNP587','LU0712206050','LU1041109759','IE00B530JS22']
+PROJ_USERINPUT_ISINS=[]
+for isin in data["isins"]:
+   PROJ_USERINPUT_ISINS.append(isin["isin"])
+
+print(PROJ_USERINPUT_ISINS)
+# PROJ_USERINPUT_ISINS=['LU1053186349', 'IE00B3VNP587','LU0712206050','LU1041109759','IE00B530JS22']

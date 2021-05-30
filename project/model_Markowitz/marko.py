@@ -1,6 +1,5 @@
 import numpy as np
 import json
-import math
 import cvxpy as cp
 import matplotlib.pyplot as plt
 
@@ -12,6 +11,10 @@ category=[]
 for name in data['data'][0]:
     category.append(name)
 category=category[3:]
+
+title=[]
+for stock in data['data']:
+    title.append(stock["ISIN"])
 
 rates={key:[] for key in category}
 res={key:{"weights":[],"variance":[]} for key in category}
@@ -115,11 +118,13 @@ while asset<n_assets:
     max_array.append(ma)
     min_array.append(mi)
 
-number=0
-for asset in range(len(allocation)):
-    plt.plot(target_returns,allocation[asset],label=f'w{number}')
+
+for asset in range(len(allocation)-1):
+    plt.plot(target_returns,allocation[asset],label=f'{title[asset]}')
     plt.fill_between(target_returns, max_array[asset], min_array[asset],alpha=0.5)
-    number=number+1
+asset+=1    
+plt.plot(target_returns,allocation[asset],label=f'risk-free')
+plt.fill_between(target_returns, max_array[asset], min_array[asset],alpha=0.5)
 
 
 plt.xlabel('returns')
