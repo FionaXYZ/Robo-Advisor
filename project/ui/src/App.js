@@ -2,6 +2,7 @@ import React,{useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ISINOption from './ISINOption'
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,17 +41,17 @@ export default function AssetSelection() {
   }
 
   function DeleteIsin(array,idx){
-    let newArray=[...array]
+    let newArray=[...array];
     if (idx>-1) {
       newArray.splice(idx, 1);
       setIsins(newArray);
     }
   }
-  const handleSubmit = event => {
-    event.preventDefault();
-    alert('You have submitted the form.')
-  }
 
+  const handleSubmit=event=>{
+    event.preventDefault();
+    axios.post('http://localhost:8000/',{isins}).then((res)=>{console.log(res.data)});
+  }
 
   console.log(isins)
   
