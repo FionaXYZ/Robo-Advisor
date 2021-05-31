@@ -35,7 +35,7 @@ export default function ISINOption({isinObj,setIsinObj,deleteIsin}) {
           ))}
         </TextField>
         {isinObj.constraint!=="None" && <TextField id="constraints-value" label="0<value<1" defaultValue={isinObj.constraint_op1} onChange={e=>setIsinObj({...isinObj,constraint_op1:e.target.value})} variant="outlined" />}
-         <Button startIcon={<DeleteIcon />} onClick={()=>{deleteIsin()}} color="default" variant="contained"></Button>
+        {isinObj.deleteable!==false && <Button startIcon={<DeleteIcon />} onClick={()=>{deleteIsin()}} color="default" variant="contained"></Button>}
          <br/>
       </>
     );
