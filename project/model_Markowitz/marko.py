@@ -6,15 +6,21 @@ import matplotlib.pyplot as plt
 with open('data_out/model_input.json') as json_file:
     data = json.load(json_file)
 
+# user-input
+with open('backend/user_input.json') as json_file:
+   input=json.load(json_file)
+input=input["isins"]
 
 category=[]
 for name in data['data'][0]:
     category.append(name)
 category=category[3:]
 
+# name of all the assets
 title=[]
 for stock in data['data']:
     title.append(stock["ISIN"])
+title.append("risk-free")
 
 rates={key:[] for key in category}
 res={key:{"weights":[],"variance":[]} for key in category}
@@ -46,6 +52,17 @@ while mini<maxi:
 target_returns.append(maxi)
 
 
+# add user input constraints
+def add_constraints(input,constraints,title):
+    for isin in input:
+        index=title.index(isin["isin"])
+        if isin["constraint"]!="None" and isin["constraint_op1"]!=None:
+            if isin["constraint"]=="\u2265":
+                constraints.extend([w[index]>=isin["constraint_op1"]])
+            else:
+                constraints.extend([w[index]<=isin["constraint_op1"]])
+
+
 # Get and Draw efficient frontier for different sampling rate
 for rate in rates:
     for datas in data["data"]:
@@ -59,7 +76,7 @@ for rate in rates:
     for target in target_returns:
         w=cp.Variable(n_assets)
         constraints=[w.T@returns>=target,cp.sum(w)==1,w>=0]
-        constraints.extend([w[0]>=0.1])
+        add_constraints(input,constraints,title)
         marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),constraints)
         marko.solve()
         if w.value is None:
@@ -83,6 +100,7 @@ plt.ylabel('returns')
 plt.legend()
 plt.show()
 
+# get average weights of the assets and boundary
 weights={key:{"weights":[]} for key in target_returns}
 number=0
 for ret in target_returns:
@@ -118,14 +136,10 @@ while asset<n_assets:
     max_array.append(ma)
     min_array.append(mi)
 
-
-for asset in range(len(allocation)-1):
+# plot the weights of the assets for different returns
+for asset in range(len(allocation)):
     plt.plot(target_returns,allocation[asset],label=f'{title[asset]}')
     plt.fill_between(target_returns, max_array[asset], min_array[asset],alpha=0.5)
-asset+=1    
-plt.plot(target_returns,allocation[asset],label=f'risk-free')
-plt.fill_between(target_returns, max_array[asset], min_array[asset],alpha=0.5)
-
 
 plt.xlabel('returns')
 plt.ylabel('weights')

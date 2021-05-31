@@ -19,7 +19,6 @@ SPIDER_MODULES = ['scraper.spiders']
 NEWSPIDER_MODULE = 'scraper.spiders'
 
 
-
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scraper (+http://www.yourdomain.com)'
 
@@ -103,5 +102,6 @@ PROJ_USERINPUT_ISINS=[]
 for isin in data["isins"]:
    PROJ_USERINPUT_ISINS.append(isin["isin"])
 
+PROJ_USERINPUT_ISINS=PROJ_USERINPUT_ISINS[:-1]
 print(PROJ_USERINPUT_ISINS)
 # PROJ_USERINPUT_ISINS=['LU1053186349', 'IE00B3VNP587','LU0712206050','LU1041109759','IE00B530JS22']

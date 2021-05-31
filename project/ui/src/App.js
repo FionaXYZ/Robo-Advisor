@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AssetSelection() {
   const classes=useStyles();
-  const default_isin=['LU1053186349','IE00B3VNP587','LU0712206050','LU1041109759','IE00B530JS22'];
+  const default_isin=['LU1053186349','IE00B3VNP587','LU0712206050','LU1041109759','IE00B530JS22','risk-free'];
 
   function makeDefualtIsinObj(isin) {
     return{"isin":isin,"constraint":"None","constraint_op1":null}
