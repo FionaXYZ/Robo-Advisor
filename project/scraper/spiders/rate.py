@@ -32,7 +32,7 @@ class QuotesSpider(scrapy.Spider):
         if response.url.split("=")[-1]=="1":
             yield {
                 'ISIN':isin,
-                '3_year_annualised':response.xpath('//div[@id="returnsTrailingDiv"]//td[contains(.,"3 Years Annualised")]/../td[@class="col2 value number"]/text()').get(),
+                '3_year_annualised':response.xpath('//div[@id="returnsTrailingDiv"]//td[contains(.,"3 Years")]/../td[@class="col2 value number"]/text()').get(),
             }
         elif response.url.split("=")[-1]=="2":
             yield {
