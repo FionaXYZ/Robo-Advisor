@@ -22,10 +22,10 @@ def filter(prices,datas_his,start,end):
             continue
         prices[data["ISIN"]].append((data["Date"],data["Price"]))
 
-start_date=datetime.strptime("2018/01/08","%Y/%m/%d")
-end_date=datetime.strptime("2021/01/08","%Y/%m/%d")
-# start_date=datetime.today()-relativedelta(years=3)
-# end_date=datetime.today()
+# start_date=datetime.strptime("2018/01/08","%Y/%m/%d")
+# end_date=datetime.strptime("2021/01/08","%Y/%m/%d")
+start_date=datetime.today()-relativedelta(years=3)
+end_date=datetime.today()
 filter(prices,datas_his,start_date,end_date)
 for isin in prices:
     sorted(prices[isin], key = lambda t: t[0])
@@ -80,15 +80,15 @@ def return_rate(modified_prices,rates,gap):
 
 # input sampling frequency in days
 
-print("Choose a sampling frequency(besides 2,5,7,10,15,20,30,60)")
-# Do not always trust uer input; add constraints here !
-rate_input=int(input())
+# print("Choose a sampling frequency(besides 2,5,7,10,15,20,30,60)")
+# # Do not always trust uer input, add constraints here !
+# rate_input=int(input())
 
 
 
 # name of sampling 
-category=[2,5,7,10,15,20,30,60]
-category.append(rate_input)
+category=[2,5,7,10,15,20,30,60,90]
+# category.append(rate_input)
 rates={key:{isin["ISIN"]:[] for isin in datas_mornid} for key in category}
 for rate in rates:
     return_rate(modified_prices,rates[rate],rate)

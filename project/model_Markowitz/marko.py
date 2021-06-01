@@ -2,6 +2,14 @@ import numpy as np
 import json
 import cvxpy as cp
 import matplotlib.pyplot as plt
+import os
+
+os.system("scrapy crawl mornst_id --nolog")
+os.system("scrapy crawl rate_sd --nolog")
+os.system("scrapy crawl unit --nolog")
+os.system("scrapy crawl ftid_no --nolog")
+os.system("scrapy crawl historical --nolog")
+os.system("python3 processor/dataform.py")
 
 with open('data_out/model_input.json') as json_file:
     data = json.load(json_file)

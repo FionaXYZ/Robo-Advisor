@@ -1,6 +1,6 @@
 import scrapy
 import json
-
+import re
 
 contents = open('data/mornst_id.jl', "r").read() 
 datas = [json.loads(str(item)) for item in contents.strip().split('\n')]
@@ -10,7 +10,7 @@ datas = [json.loads(str(item)) for item in contents.strip().split('\n')]
 
 class QuotesSpider(scrapy.Spider):
 
-    name = 'rate_sd'
+    name='rate_sd'
     start_urls=[]
     link_format='https://www.morningstar.co.uk/uk/funds/snapshot/snapshot.aspx?id='
     for data in datas:
@@ -25,14 +25,14 @@ class QuotesSpider(scrapy.Spider):
 
         morn_id=response.url.split("=")[-2][:-4]
         for data in datas:
-            if data["mornst_id"]== morn_id:
+            if data["mornst_id"]==morn_id:
                 isin=data["ISIN"]
                 break
 
         if response.url.split("=")[-1]=="1":
             yield {
                 'ISIN':isin,
-                '3_year_annualised': response.xpath('//div[@id="returnsTrailingDiv"]//td[contains(.,"3 Years Annualised")]/../td[@class="col2 value number"]/text()').get()           
+                '3_year_annualised':response.xpath('//div[@id="returnsTrailingDiv"]//td[contains(.,"3 Years Annualised")]/../td[@class="col2 value number"]/text()').get(),
             }
         elif response.url.split("=")[-1]=="2":
             yield {

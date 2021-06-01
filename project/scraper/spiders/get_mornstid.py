@@ -7,7 +7,7 @@ from scrapy.selector import Selector
 #going through the websites in web.py
 
 class QuotesSpider(scrapy.Spider):
-    name = 'mornst_id'
+    name='mornst_id'
 
 
     def start_requests(self):
