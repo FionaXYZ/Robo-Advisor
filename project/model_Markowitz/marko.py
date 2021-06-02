@@ -4,11 +4,11 @@ import cvxpy as cp
 import matplotlib.pyplot as plt
 import os
 
-os.system("scrapy crawl mornst_id --nolog")
-os.system("scrapy crawl rate_sd --nolog")
-os.system("scrapy crawl unit --nolog")
-os.system("scrapy crawl ftid_no --nolog")
-os.system("scrapy crawl historical --nolog")
+# os.system("scrapy crawl mornst_id --nolog")
+# os.system("scrapy crawl rate_sd --nolog")
+# os.system("scrapy crawl unit --nolog")
+# os.system("scrapy crawl ftid_no --nolog")
+# os.system("scrapy crawl historical --nolog")
 os.system("python3 processor/dataform.py")
 
 with open('data_out/model_input.json') as json_file:
@@ -45,13 +45,13 @@ returns.append(rf)
 n_assets=len(returns)
 returns=np.array(returns)
 maxi=np.max(returns)
-print(f"maximum possible return you can choose is {maxi}")
+# print(f"maximum possible return you can choose is {maxi}")
 zeros=np.array([np.zeros((n_assets-1,), dtype=int)])
 zeros_vertical=np.array([np.zeros((n_assets,),dtype=int)])
 
 
 mini=rf
-print(f"The possible minimum return available {mini}")
+# print(f"The possible minimum return available {mini}")
 # find the returns on efficient frontier
 target_returns=[]
 while mini<maxi:
@@ -95,18 +95,24 @@ for rate in rates:
         if target==target_returns[0]:
             mini=np.around(np.dot(w.value,returns),decimals=4)
         res[rate]["variance"].append(marko.value)
-print(f"The maximum return available {maxi}")
-print(f"The minimum return available {mini}")
 
+max_mini=[{"range_max":maxi},{"range_min":mini}]
+with open('output/range.json','w') as outfile:
+    json.dump(max_mini, outfile)
+
+
+
+# plot return vs risk
 for rate in res:
     WCW=res[rate]["variance"]
+    plt.figure(0)
     plt.plot(WCW, target_returns,'o',label=f'{rate}')
-# print(res)
 
 plt.xlabel('WCW')
 plt.ylabel('returns')
 plt.legend()
-plt.show()
+plt.savefig('output/frontier.png',dpi=200)
+
 
 # get average weights of the assets and boundary
 weights={key:{"weights":[]} for key in target_returns}
@@ -117,16 +123,23 @@ for ret in target_returns:
     number=number+1
 
 weights_avg={key:{"mean":[],"max":[],"min":[]} for key in target_returns}  
+avg={}
 
 for ret in target_returns:
     mean=np.mean(weights[ret]["weights"],axis=0)
-    weights_avg[ret]["mean"].append(np.around(mean, decimals=4))
+    weights_avg[ret]["mean"].append(np.around(mean,decimals=4))
     max=np.amax(weights[ret]["weights"],axis=0)
     min=np.amin(weights[ret]["weights"],axis=0)
-    weights_avg[ret]["max"].append(np.around(max, decimals=4))
-    weights_avg[ret]["min"].append(np.around(min, decimals=4))
-# print(weights_avg)
+    weights_avg[ret]["max"].append(np.around(max,decimals=4))
+    weights_avg[ret]["min"].append(np.around(min,decimals=4))
+    if ret<=maxi:
+        avg[ret]=np.around(mean,decimals=4).tolist()
 
+with open('output/avg_suggesstion.json','w') as outfile:
+    json.dump(avg,outfile)
+
+
+# new format
 asset=0
 allocation=[]
 max_array=[]
@@ -146,10 +159,14 @@ while asset<n_assets:
 
 # plot the weights of the assets for different returns
 for asset in range(len(allocation)):
+    plt.figure(1)
     plt.plot(target_returns,allocation[asset],label=f'{title[asset]}')
     plt.fill_between(target_returns, max_array[asset], min_array[asset],alpha=0.5)
 
 plt.xlabel('returns')
 plt.ylabel('weights')
 plt.legend()
-plt.show()
+plt.savefig('output/allocation.png',dpi=200)
+
+with open('output/assets.json','w') as outfile:
+    json.dump(title, outfile)

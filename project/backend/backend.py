@@ -1,14 +1,14 @@
 import http.server
 import socketserver
 import json
-
+import os
 class MyHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         self.data_string=self.rfile.read(int(self.headers['Content-Length']))
         user_input=json.loads(self.data_string)
-        print(user_input)
         with open("backend/user_input.json","w") as outfile:
             json.dump(user_input,outfile)
+        os.system("python3 model_Markowitz/marko.py")      
         self.send_response(200)
         self.end_headers()
 
