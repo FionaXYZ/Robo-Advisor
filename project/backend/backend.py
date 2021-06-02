@@ -11,6 +11,8 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         os.system("python3 model_Markowitz/marko.py")      
         self.send_response(200)
         self.end_headers()
+        with open('output/range.json', 'rb') as max_mini:
+            self.wfile.write(max_mini.read())
 
     def do_OPTIONS(self):
         self.send_response(204)

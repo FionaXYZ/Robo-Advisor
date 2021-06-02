@@ -96,7 +96,7 @@ for rate in rates:
             mini=np.around(np.dot(w.value,returns),decimals=4)
         res[rate]["variance"].append(marko.value)
 
-max_mini=[{"range_max":maxi},{"range_min":mini}]
+max_mini={"range_max":maxi,"range_min":mini}
 with open('output/range.json','w') as outfile:
     json.dump(max_mini, outfile)
 
