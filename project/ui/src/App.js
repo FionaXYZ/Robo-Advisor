@@ -13,6 +13,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { green } from '@material-ui/core/colors';
 import mpld3 from 'mpld3';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 
 function makeuidfunc(prefix){
@@ -35,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     position: 'relative',
   },
-
   buttonSubmit:{
     color: 'white' ,
     backgroundColor: green[500],
@@ -96,6 +97,7 @@ export default function AssetSelection() {
 
   const handleSubmit=(event)=>{
     // event.preventDefault();
+    Setfeedback({"max_mini":null,"frontier":null,"allocation":null});
     axios.post('http://localhost:8000/',{isins}).then((res)=>{
       // debugger;
       console.log(res.data);
@@ -138,9 +140,21 @@ export default function AssetSelection() {
         </Typography>
         <Typography variant="h5" component="h2" align="center" id="allocation">
         </Typography>
-
       </CardContent>
     </Card>}
+    {feedback.frontier!==null&&feedback.allocation!==null&&<Card className={classes.root}>
+      <CardContent>
+        <Typography variant="h5" component="h2" align="center" id="frontier">
+        </Typography>
+      </CardContent>
+    </Card>}
+    {feedback.allocation!==null&&  <Card className={classes.root}>
+      <CardContent>
+        <Typography variant="h5" component="h2" align="center" id="allocation">
+        </Typography>
+      </CardContent>
+    </Card>}
+
     </>
   )
 }
