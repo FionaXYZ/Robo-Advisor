@@ -108,7 +108,7 @@ with open('output/range.json','w') as outfile:
 
 
 # plot return vs risk
-fig=plt.figure(1,figsize=(12,8))
+fig=plt.figure(1)
 for rate in res:
     WCW=res[rate]["variance"]
     plt.plot(WCW, target_returns,'o',label=f'{rate}')
@@ -159,7 +159,7 @@ while asset<n_assets:
     max_array.append(ma)
     min_array.append(mi)
 
-fig2=plt.figure(2,figsize=(12,8))
+fig2=plt.figure(2)
 for asset in range(len(allocation)):
     plt.plot(target_returns,allocation[asset],label=f'{title[asset]}')
     plt.fill_between(target_returns,max_array[asset],min_array[asset],alpha=0.5)
