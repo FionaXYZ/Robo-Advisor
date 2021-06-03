@@ -136,13 +136,9 @@ export default function AssetSelection() {
         <Typography variant="h5" component="h2" align="center" >
          Maximum return available:{feedback.max_mini.range_max}    &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp; &nbsp;     Minimum return available: {feedback.max_mini.range_min}<br/> 
         </Typography>
-        <Typography variant="h5" component="h2" align="center" id="frontier">
-        </Typography>
-        <Typography variant="h5" component="h2" align="center" id="allocation">
-        </Typography>
       </CardContent>
     </Card>}
-    {feedback.frontier!==null&&feedback.allocation!==null&&<Card className={classes.root}>
+    {feedback.frontier!==null&&<Card className={classes.root}>
       <CardContent>
         <Typography variant="h5" component="h2" align="center" id="frontier">
         </Typography>
