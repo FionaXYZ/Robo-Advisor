@@ -3,6 +3,8 @@ import json
 import cvxpy as cp
 import matplotlib.pyplot as plt
 import os
+import mpld3
+from mpld3 import plugins
 
 # os.system("scrapy crawl mornst_id --nolog")
 # os.system("scrapy crawl rate_sd --nolog")
@@ -123,7 +125,7 @@ for ret in target_returns:
     number=number+1
 
 weights_avg={key:{"mean":[],"max":[],"min":[]} for key in target_returns}  
-avg={}
+# avg={}
 
 for ret in target_returns:
     mean=np.mean(weights[ret]["weights"],axis=0)
@@ -132,11 +134,11 @@ for ret in target_returns:
     min=np.amin(weights[ret]["weights"],axis=0)
     weights_avg[ret]["max"].append(np.around(max,decimals=4))
     weights_avg[ret]["min"].append(np.around(min,decimals=4))
-    if ret<=maxi:
-        avg[ret]=np.around(mean,decimals=4).tolist()
+    # if ret<=maxi:
+    #     avg[ret]=np.around(mean,decimals=4).tolist()
 
-with open('output/avg_suggesstion.json','w') as outfile:
-    json.dump(avg,outfile)
+# with open('output/avg_suggesstion.json','w') as outfile:
+#     json.dump(avg,outfile)
 
 
 # new format
@@ -158,15 +160,19 @@ while asset<n_assets:
     min_array.append(mi)
 
 # plot the weights of the assets for different returns
+fig2,ax2=plt.subplots(figsize=(12,8))
 for asset in range(len(allocation)):
-    plt.figure(1)
     plt.plot(target_returns,allocation[asset],label=f'{title[asset]}')
-    plt.fill_between(target_returns, max_array[asset], min_array[asset],alpha=0.5)
+    plt.fill_between(target_returns,max_array[asset],min_array[asset],alpha=0.5)
 
-plt.xlabel('returns')
-plt.ylabel('weights')
-plt.legend()
-plt.savefig('output/allocation.png',dpi=200)
+handles,labels=ax2.get_legend_handles_labels()
+interactive_legend=plugins.InteractiveLegendPlugin(zip(handles,ax2.collections),labels,alpha_unsel=0.5,alpha_over=1.5,start_visible=True)
+plugins.connect(fig2,interactive_legend)
 
-with open('output/assets.json','w') as outfile:
-    json.dump(title, outfile)
+ax2.set_xlabel('returns')
+ax2.set_ylabel('weights')
+ax2.set_title('Assets allocation',size=20)
+# mpld3.show()
+mpld3.fig_to_dict(fig2)
+mpld3.save_json(fig2,'output/allocation.json')
+# plot the weights of the assets for different returns
