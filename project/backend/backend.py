@@ -11,8 +11,15 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         os.system("python3 model_Markowitz/marko.py")      
         self.send_response(200)
         self.end_headers()
-        with open('output/range.json', 'rb') as max_mini:
-            self.wfile.write(max_mini.read())
+        feedback={}
+        with open('output/range.json') as json_file:
+            feedback["max_mini"]=json.load(json_file)
+        with open('output/frontier.json') as json_file:
+            feedback["frontier"]=json.load(json_file)
+        with open('output/allocation.json') as json_file:
+            feedback["allocation"]=json.load(json_file)
+        self.wfile.write(json.dumps(feedback).encode("utf8"))
+        
 
     def do_OPTIONS(self):
         self.send_response(204)

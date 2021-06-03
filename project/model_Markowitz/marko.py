@@ -90,7 +90,10 @@ for rate in rates:
         marko=cp.Problem(cp.Minimize((1/2)*cp.quad_form(w, model_input)),constraints)
         marko.solve()
         if w.value is None:
-            res[rate]["weights"].append([np.NAN]*n_assets)
+            end=target_returns.index(target)
+            target_returns=target_returns[:end]
+            break
+            # res[rate]["weights"].append([np.NAN]*n_assets)
         else:
             maxi=target
             res[rate]["weights"].append(w.value)
@@ -105,18 +108,17 @@ with open('output/range.json','w') as outfile:
 
 
 # plot return vs risk
+fig=plt.figure(1,figsize=(12,8))
 for rate in res:
     WCW=res[rate]["variance"]
-    fig=plt.figure(0,figsize=(12,8))
     plt.plot(WCW, target_returns,'o',label=f'{rate}')
 
 plt.xlabel('WCW')
 plt.ylabel('returns')
 plt.legend()
+mpld3.save_html(fig,"output/frontier.html")
 mpld3.fig_to_dict(fig)
 mpld3.save_json(fig,'output/frontier.json')
-# mpld3.save_html(fig,"output/frontier.html")
-# plt.savefig('output/frontier.png',dpi=200)
 
 
 # get average weights of the assets and boundary
@@ -128,7 +130,7 @@ for ret in target_returns:
     number=number+1
 
 weights_avg={key:{"mean":[],"max":[],"min":[]} for key in target_returns}  
-# avg={}
+
 
 for ret in target_returns:
     mean=np.mean(weights[ret]["weights"],axis=0)
@@ -137,11 +139,6 @@ for ret in target_returns:
     min=np.amin(weights[ret]["weights"],axis=0)
     weights_avg[ret]["max"].append(np.around(max,decimals=4))
     weights_avg[ret]["min"].append(np.around(min,decimals=4))
-    # if ret<=maxi:
-    #     avg[ret]=np.around(mean,decimals=4).tolist()
-
-# with open('output/avg_suggesstion.json','w') as outfile:
-#     json.dump(avg,outfile)
 
 
 # new format
@@ -162,19 +159,14 @@ while asset<n_assets:
     max_array.append(ma)
     min_array.append(mi)
 
-# plot the weights of the assets for different returns
-fig2,ax2=plt.subplots(figsize=(12,8))
+fig2=plt.figure(2,figsize=(12,8))
 for asset in range(len(allocation)):
     plt.plot(target_returns,allocation[asset],label=f'{title[asset]}')
     plt.fill_between(target_returns,max_array[asset],min_array[asset],alpha=0.5)
-
-handles,labels=ax2.get_legend_handles_labels()
-interactive_legend=plugins.InteractiveLegendPlugin(zip(handles,ax2.collections),labels,alpha_unsel=0.5,alpha_over=1.5,start_visible=True)
-plugins.connect(fig2,interactive_legend)
-
-ax2.set_xlabel('returns')
-ax2.set_ylabel('weights')
-ax2.set_title('Assets allocation',size=20)
-# mpld3.show()
+plt.xlabel('returns')
+plt.ylabel('weights')
+plt.legend()
+mpld3.save_html(fig2,"output/allocation.html")
 mpld3.fig_to_dict(fig2)
 mpld3.save_json(fig2,'output/allocation.json')
+

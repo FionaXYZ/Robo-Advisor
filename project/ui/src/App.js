@@ -12,6 +12,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { green } from '@material-ui/core/colors';
+import mpld3 from 'mpld3';
 
 
 function makeuidfunc(prefix){
@@ -58,7 +59,7 @@ export default function AssetSelection() {
   }
 
   const [isins,setIsins]=useState([...default_isin.map(makeDefaultIsinObjNotDeleteable),makeDefaultIsinObj('risk-free',false)])
-  const [scope,Setscope]=useState({"range_max":null,"range_min":null})
+  const [feedback,Setfeedback]=useState({"max_mini":null,"frontier":null,"allocation":null})
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen=()=>{
@@ -95,10 +96,19 @@ export default function AssetSelection() {
 
   const handleSubmit=(event)=>{
     // event.preventDefault();
-    axios.post('http://localhost:8000/',{isins}).then((res)=>{console.log(res.data);Setscope(res.data)});
+    axios.post('http://localhost:8000/',{isins}).then((res)=>{
+      // debugger;
+      console.log(res.data);
+      // let x={}
+      // eval('let x='+res.data +'; Setfeedback(x.data);');
+      Setfeedback(res.data);
+      mpld3.draw_figure("frontier",res.data.frontier);
+      mpld3.draw_figure("allocation",res.data.allocation)
+    });
+    
   }
 
-  // console.log(isins)
+  console.log(mpld3)
   return (
     <>
        <Button variant="outlined" color="primary" onClick={handleClickOpen} align="center">
@@ -119,11 +129,16 @@ export default function AssetSelection() {
         {/* </form> */}
       </Dialog>
   
-     {scope.range_max!==null&&scope.range_min!==null&&  <Card className={classes.root}>
+     {feedback.max_mini!==null&&  <Card className={classes.root}>
       <CardContent>
         <Typography variant="h5" component="h2" align="center" >
-         Maximum return available:{scope.range_max}    &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp; &nbsp;     Minimum return available: {scope.range_min}
+         Maximum return available:{feedback.max_mini.range_max}    &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp; &nbsp;     Minimum return available: {feedback.max_mini.range_min}<br/> 
         </Typography>
+        <Typography variant="h5" component="h2" align="center" id="frontier">
+        </Typography>
+        <Typography variant="h5" component="h2" align="center" id="allocation">
+        </Typography>
+
       </CardContent>
     </Card>}
     </>
