@@ -107,13 +107,16 @@ with open('output/range.json','w') as outfile:
 # plot return vs risk
 for rate in res:
     WCW=res[rate]["variance"]
-    plt.figure(0)
+    fig=plt.figure(0,figsize=(12,8))
     plt.plot(WCW, target_returns,'o',label=f'{rate}')
 
 plt.xlabel('WCW')
 plt.ylabel('returns')
 plt.legend()
-plt.savefig('output/frontier.png',dpi=200)
+mpld3.fig_to_dict(fig)
+mpld3.save_json(fig,'output/frontier.json')
+# mpld3.save_html(fig,"output/frontier.html")
+# plt.savefig('output/frontier.png',dpi=200)
 
 
 # get average weights of the assets and boundary
@@ -175,4 +178,3 @@ ax2.set_title('Assets allocation',size=20)
 # mpld3.show()
 mpld3.fig_to_dict(fig2)
 mpld3.save_json(fig2,'output/allocation.json')
-# plot the weights of the assets for different returns
