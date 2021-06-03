@@ -15,6 +15,7 @@ import { green } from '@material-ui/core/colors';
 import mpld3 from 'mpld3';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 function makeuidfunc(prefix){
@@ -46,6 +47,53 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const useStylesCircle = makeStyles((theme) => ({
+  root: {
+    position: 'relative',
+  },
+  bottom: {
+    color: theme.palette.grey[theme.palette.type === 'light' ? 200 : 700],
+  },
+  top: {
+    color: '#1a90ff',
+    animationDuration: '550ms',
+    position: 'absolute',
+    left: 0,
+  },
+  circle: {
+    strokeLinecap: 'round',
+  },
+}));
+
+
+function CCircularProgress(props) {
+  const classes = useStylesCircle();
+
+  return (
+    <div className={classes.root}>
+      <CircularProgress
+        variant="determinate"
+        className={classes.bottom}
+        size={40}
+        thickness={4}
+        {...props}
+        value={100}
+      />
+      <CircularProgress
+        variant="indeterminate"
+        disableShrink
+        className={classes.top}
+        classes={{
+          circle: classes.circle,
+        }}
+        size={40}
+        thickness={4}
+        {...props}
+      />
+    </div>
+  );
+}
+
 
 export default function AssetSelection() {
   const classes=useStyles();
@@ -61,7 +109,8 @@ export default function AssetSelection() {
 
   const [isins,setIsins]=useState([...default_isin.map(makeDefaultIsinObjNotDeleteable),makeDefaultIsinObj('risk-free',false)])
   const [feedback,Setfeedback]=useState({"max_mini":null,"frontier":null,"allocation":null})
-  const [open, setOpen] = React.useState(false);
+  const [open,setOpen]=React.useState(false);
+  const [load,setLoad]=React.useState(false)
 
   const handleClickOpen=()=>{
     setOpen(true);
@@ -69,6 +118,14 @@ export default function AssetSelection() {
 
   const handleClose=()=>{
     setOpen(false);
+  };
+
+  const onLoading=()=>{
+    setLoad(true);
+  };
+
+  const offLoading=()=>{
+    setLoad(false);
   };
 
   function factoryUpdateArray(array,idx) {
@@ -104,6 +161,7 @@ export default function AssetSelection() {
       // let x={}
       // eval('let x='+res.data +'; Setfeedback(x.data);');
       Setfeedback(res.data);
+      offLoading();
       mpld3.draw_figure("frontier",res.data.frontier);
       mpld3.draw_figure("allocation",res.data.allocation)
     });
@@ -112,10 +170,12 @@ export default function AssetSelection() {
 
   console.log(mpld3)
   return (
-    <>
+    <> <Typography variant="h5" component="h2" align="center" >
        <Button variant="outlined" color="primary" onClick={handleClickOpen} align="center">
-       Select Your Assets
+       Select Your Assets  &nbsp; &nbsp;  {load===true&&<CCircularProgress/>}
       </Button>
+      </Typography>
+      {/* {load===true&&<CCircularProgress/>} */}
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth="true" maxWidth="md" className={classes.root}>
         <DialogTitle id="form-dialog-title">Select Your Assets</DialogTitle>
         {/* <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}> */}
@@ -126,7 +186,7 @@ export default function AssetSelection() {
       <Button onClick={()=>{NewIsin(isins)}} color="primary" variant="contained">Add New ISIN</Button>
        </DialogContent>
         <DialogActions>
-        <Button variant="contained" type="submit" onClick={()=>{handleSubmit();handleClose()}} className={classes.buttonSubmit}>Submit</Button>
+        <Button variant="contained" type="submit" onClick={()=>{handleSubmit();handleClose();onLoading()}} className={classes.buttonSubmit}>Submit</Button>
         </DialogActions>
         {/* </form> */}
       </Dialog>
