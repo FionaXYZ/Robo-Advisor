@@ -9,12 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { green } from '@material-ui/core/colors';
 import mpld3 from 'mpld3';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
@@ -30,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),
-      // width: '25ch',
-      
     },
   },
   dialogspace:{
@@ -156,10 +151,7 @@ export default function AssetSelection() {
     // event.preventDefault();
     Setfeedback({"max_mini":null,"frontier":null,"allocation":null});
     axios.post('http://localhost:8000/',{isins}).then((res)=>{
-      // debugger;
-      console.log(res.data);
-      // let x={}
-      // eval('let x='+res.data +'; Setfeedback(x.data);');
+      // console.log(res.data);
       Setfeedback(res.data);
       offLoading();
       mpld3.draw_figure("frontier",res.data.frontier);
@@ -175,10 +167,8 @@ export default function AssetSelection() {
        Select Your Assets  &nbsp; &nbsp;  {load===true&&<CCircularProgress/>}
       </Button>
       </Typography>
-      {/* {load===true&&<CCircularProgress/>} */}
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth="true" maxWidth="md" className={classes.root}>
         <DialogTitle id="form-dialog-title">Select Your Assets</DialogTitle>
-        {/* <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}> */}
         <DialogContent>
       {isins.map((isin,i)=>
           (<ISINOption isinObj={isin} setIsinObj={factoryUpdateArray(isins,i)} deleteIsin={isin.deleteable?makeDeleteIsin(isins,i):null} key={isin.uid}/>
@@ -188,7 +178,6 @@ export default function AssetSelection() {
         <DialogActions>
         <Button variant="contained" type="submit" onClick={()=>{handleSubmit();handleClose();onLoading()}} className={classes.buttonSubmit}>Submit</Button>
         </DialogActions>
-        {/* </form> */}
       </Dialog>
   
      {feedback.max_mini!==null&&  <Card className={classes.root}>
