@@ -20,6 +20,11 @@ with open('data_out/model_input.json') as json_file:
 with open('backend/user_input.json') as json_file:
    input=json.load(json_file)
 input=input["isins"]
+for isin in input:
+    if isin["isin"]!="risk-free":
+        continue
+    rf=float(isin["rate"])/100
+
 
 category=[]
 for name in data['data'][0]:
@@ -42,7 +47,7 @@ for datas in data["data"]:
     returns.append(datas["3_year_annalised"])
 
 # adding risk free asset to the model
-rf=0.0045
+# rf=0.0045
 returns.append(rf)
 n_assets=len(returns)
 returns=np.array(returns)
@@ -116,7 +121,7 @@ for rate in res:
 plt.xlabel('WCW')
 plt.ylabel('returns')
 plt.legend()
-mpld3.save_html(fig,"output/frontier.html")
+# mpld3.save_html(fig,"output/frontier.html")
 mpld3.fig_to_dict(fig)
 mpld3.save_json(fig,'output/frontier.json')
 
@@ -166,7 +171,7 @@ for asset in range(len(allocation)):
 plt.xlabel('returns')
 plt.ylabel('weights')
 plt.legend()
-mpld3.save_html(fig2,"output/allocation.html")
+# mpld3.save_html(fig2,"output/allocation.html")
 mpld3.fig_to_dict(fig2)
 mpld3.save_json(fig2,'output/allocation.json')
 

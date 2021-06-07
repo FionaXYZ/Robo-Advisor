@@ -95,14 +95,14 @@ export default function AssetSelection() {
   const default_isin=['LU1053186349','IE00B3VNP587','LU0712206050','LU1041109759','IE00B530JS22'];
 
   function makeDefaultIsinObjNotDeleteable(isin){
-    return makeDefaultIsinObj(isin,true)
+    return makeDefaultIsinObj(isin,true,"Empty")
   }
   
-  function makeDefaultIsinObj(isin,deleteable=true) {
-    return{"isin":isin,"constraint":"None","constraint_op1":null,"deleteable":deleteable,"uid":makeISINId()}
+  function makeDefaultIsinObj(isin,deleteable=true,rate="Empty") {
+    return{"isin":isin,"constraint":"None","constraint_op1":null,"deleteable":deleteable,"rate":rate,"uid":makeISINId()}
   }
 
-  const [isins,setIsins]=useState([...default_isin.map(makeDefaultIsinObjNotDeleteable),makeDefaultIsinObj('risk-free',false)])
+  const [isins,setIsins]=useState([...default_isin.map(makeDefaultIsinObjNotDeleteable),makeDefaultIsinObj('risk-free',false,0.45)])
   const [feedback,Setfeedback]=useState({"max_mini":null,"frontier":null,"allocation":null})
   const [open,setOpen]=React.useState(false);
   const [load,setLoad]=React.useState(false)
@@ -142,7 +142,7 @@ export default function AssetSelection() {
     return (()=>{
     let newArray=[...array];
     if (idx>-1) {
-      newArray.splice(idx, 1);
+      newArray.splice(idx,1);
       setIsins(newArray);
     }})
   }
@@ -159,8 +159,7 @@ export default function AssetSelection() {
     });
     
   }
-
-  console.log(mpld3)
+  // console.log(isins)
   return (
     <> <Typography variant="h5" component="h2" align="center" >
        <Button variant="outlined" color="primary" onClick={handleClickOpen} align="center">
