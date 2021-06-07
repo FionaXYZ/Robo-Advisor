@@ -6,11 +6,11 @@ import os
 import mpld3
 from mpld3 import plugins
 
-# os.system("scrapy crawl mornst_id --nolog")
-# os.system("scrapy crawl rate_sd --nolog")
-# os.system("scrapy crawl unit --nolog")
-# os.system("scrapy crawl ftid_no --nolog")
-# os.system("scrapy crawl historical --nolog")
+os.system("scrapy crawl mornst_id --nolog")
+os.system("scrapy crawl rate_sd --nolog")
+os.system("scrapy crawl unit --nolog")
+os.system("scrapy crawl ftid_no --nolog")
+os.system("scrapy crawl historical --nolog")
 os.system("python3 processor/dataform.py")
 
 with open('data_out/model_input.json') as json_file:

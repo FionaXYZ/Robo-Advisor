@@ -2,13 +2,13 @@ import json
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-contents_mornid = open('data/mornst_id.jl', "r").read() 
-datas_mornid = [json.loads(str(item)) for item in contents_mornid.strip().split('\n')]
+contents_mornid=open('data/mornst_id.jl',"r").read() 
+datas_mornid=[json.loads(str(item)) for item in contents_mornid.strip().split('\n')]
 
-contents_rate = open('data/rate_sd.jl', "r").read() 
-datas_rate = [json.loads(str(item)) for item in contents_rate.strip().split('\n')]
+contents_rate=open('data/rate_sd.jl',"r").read() 
+datas_rate=[json.loads(str(item)) for item in contents_rate.strip().split('\n')]
 
-contents_his = open('data/historical.jl', "r").read() 
+contents_his=open('data/historical.jl',"r").read() 
 datas_his = [json.loads(str(item)) for item in contents_his.strip().split('\n')]
 
 
@@ -40,10 +40,10 @@ def impute(modified_prices,prices):
     for isin in prices:
         for pair in range(len(prices[isin])-1):
             diff=(prices[isin][pair][0]-prices[isin][pair+1][0]).days
-            modified_prices[isin].append(float(prices[isin][pair][1]))
+            modified_prices[isin].append(float(prices[isin][pair][1].replace(",","")))
             if diff>1:
-                price_now=float(prices[isin][pair][1])
-                price_next=float(prices[isin][pair+1][1])
+                price_now=float(prices[isin][pair][1].replace(",",""))
+                price_next=float(prices[isin][pair+1][1].replace(",",""))
                 ratio=(price_next/price_now)**(1/diff)
                 next=price_now*ratio
                 while diff>1:
@@ -72,8 +72,8 @@ for isin in prices:
 
 def return_rate(modified_prices,rates,gap):
     for isin in modified_prices: 
-        for step in range(0,len(modified_prices[isin])-gap):
-            rate=(modified_prices[isin][step]/modified_prices[isin][step+gap])**(1/gap)
+        for step in range(0,len(modified_prices[isin])-gap,gap):
+            rate=modified_prices[isin][step]/modified_prices[isin][step+gap]
             rates[isin].append(round(rate,4))
 
 
