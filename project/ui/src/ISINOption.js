@@ -23,8 +23,8 @@ export default function ISINOption({isinObj,setIsinObj,deleteIsin}) {
 
     return (
       <>
-        <TextField label="ISIN" id="standard-basic" defaultValue={isinObj.isin} onChange={e=>setIsinObj({...isinObj,isin:e.target.value})} variant="outlined"/>
-        <TextField id="select-constraints" select label="Constraints"  defaultValue={isinObj.constraint} onChange={e=>{setIsinObj({...isinObj,constraint:e.target.value})}} 
+        <TextField label="ISIN" defaultValue={isinObj.isin} onChange={e=>setIsinObj({...isinObj,isin:e.target.value})} variant="outlined"/>
+        <TextField select label="Constraints"  defaultValue={isinObj.constraint} onChange={e=>{setIsinObj({...isinObj,constraint:e.target.value})}} 
           SelectProps={{native: true,}}
           helperText="Choose to add constraint"
           variant="outlined" >
@@ -34,7 +34,8 @@ export default function ISINOption({isinObj,setIsinObj,deleteIsin}) {
             </option>
           ))}
         </TextField>
-        {isinObj.constraint!=="None" && <TextField id="constraints-value" label={"weight "+isinObj.constraint} helperText="weight should be between 0 and 1" defaultValue={isinObj.constraint_op1} onChange={e=>setIsinObj({...isinObj,constraint_op1:e.target.value})} variant="outlined" />}
+        {isinObj.constraint!=="None" && <TextField label={"weight "+isinObj.constraint} helperText="weight should be between 0 and 1" defaultValue={isinObj.constraint_op1} onChange={e=>setIsinObj({...isinObj,constraint_op1:e.target.value})} variant="outlined" />}
+        {isinObj.deleteable!==true && <TextField label={"Return rate %"} helperText="Return rate of the saving account" defaultValue={isinObj.rate} onChange={e=>setIsinObj({...isinObj,rate:e.target.value})} variant="outlined" />}
         {isinObj.deleteable!==false && <Button startIcon={<DeleteIcon />} onClick={()=>{deleteIsin()}} color="default" variant="contained"></Button>}
          <br/><br/>
       </>
