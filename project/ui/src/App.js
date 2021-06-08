@@ -108,6 +108,16 @@ export default function AssetSelection() {
   const [feedback,Setfeedback]=useState({"max_mini":null,"frontier":null,"allocation":null})
   const [open,setOpen]=React.useState(false);
   const [load,setLoad]=React.useState(false)
+  const [ifram,setIframe]=React.useState(false)
+
+
+  const handleIframeOpen=()=>{
+    setIframe(true);
+  };
+
+  const handleIframeClose=()=>{
+    setIframe(false);
+  };
 
   const handleClickOpen=()=>{
     setOpen(true);
@@ -163,9 +173,21 @@ export default function AssetSelection() {
   }
   // console.log(isins)
   return (
-    <> <Link href="https://en.wikipedia.org/wiki/Markowitz_model">
-    <ImportContactsRoundedIcon fontSize="large"></ImportContactsRoundedIcon>
-       </Link>
+    <> 
+    {/* educational link on Markowitz model */}
+    <ImportContactsRoundedIcon color="primary" fontSize="large" onClick={handleIframeOpen}></ImportContactsRoundedIcon>
+     <Dialog open={ifram} onClose={handleIframeClose} aria-labelledby="form-dialog-title" fullScreen="true" className={classes.root}>
+    <DialogTitle>
+    </DialogTitle>
+    <DialogContent>
+    <iframe src="https://en.wikipedia.org/wiki/Markowitz_model" width="100%" height="100%"></iframe>
+   </DialogContent>
+   <DialogActions>
+   <Button variant="contained" color="primary" onClick={()=>{handleIframeClose()}}>Close</Button>
+   </DialogActions>
+  </Dialog>
+
+   {/* User input on setting assets and constraints */}
       <Typography variant="h5" component="h2" align="center" >
        <Button variant="outlined" color="primary" onClick={handleClickOpen} align="center">
        Select Your Assets  &nbsp; &nbsp;  {load===true&&<CCircularProgress/>}
@@ -183,7 +205,8 @@ export default function AssetSelection() {
         <Button variant="contained" type="submit" onClick={()=>{handleSubmit();handleClose();onLoading()}} className={classes.buttonSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
-  
+
+  {/* Showing result from Markowitz model */}
      {feedback.max_mini!==null&&  <Card className={classes.root}>
       <CardContent>
         <Typography variant="h5" component="h2" align="center" >
