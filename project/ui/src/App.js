@@ -13,6 +13,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { green } from '@material-ui/core/colors';
 import mpld3 from 'mpld3';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ImportContactsRoundedIcon from '@material-ui/icons/ImportContactsRounded';
+import Link from '@material-ui/core/Link';
 
 
 function makeuidfunc(prefix){
@@ -161,7 +163,10 @@ export default function AssetSelection() {
   }
   // console.log(isins)
   return (
-    <> <Typography variant="h5" component="h2" align="center" >
+    <> <Link href="https://en.wikipedia.org/wiki/Markowitz_model">
+    <ImportContactsRoundedIcon></ImportContactsRoundedIcon>
+       </Link>
+      <Typography variant="h5" component="h2" align="center" >
        <Button variant="outlined" color="primary" onClick={handleClickOpen} align="center">
        Select Your Assets  &nbsp; &nbsp;  {load===true&&<CCircularProgress/>}
       </Button>
