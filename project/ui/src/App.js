@@ -164,7 +164,7 @@ export default function AssetSelection() {
   // console.log(isins)
   return (
     <> <Link href="https://en.wikipedia.org/wiki/Markowitz_model">
-    <ImportContactsRoundedIcon></ImportContactsRoundedIcon>
+    <ImportContactsRoundedIcon fontSize="large"></ImportContactsRoundedIcon>
        </Link>
       <Typography variant="h5" component="h2" align="center" >
        <Button variant="outlined" color="primary" onClick={handleClickOpen} align="center">
