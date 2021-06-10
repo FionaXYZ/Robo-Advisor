@@ -35,17 +35,16 @@ for isin in prices:
 
 #imputation
 modified_prices={isin["ISIN"]:[] for isin in datas_mornid}
-
 def impute(modified_prices,prices):
     for isin in prices:
-        for pair in range(len(prices[isin])-1):
-            diff=(prices[isin][pair][0]-prices[isin][pair+1][0]).days
-            modified_prices[isin].append(float(prices[isin][pair][1].replace(",","")))
+        for current in range(len(prices[isin])-1):
+            diff=(prices[isin][current][0]-prices[isin][current+1][0]).days
+            price_current=float(prices[isin][current][1].replace(",",""))
+            modified_prices[isin].append(price_current)
             if diff>1:
-                price_now=float(prices[isin][pair][1].replace(",",""))
-                price_next=float(prices[isin][pair+1][1].replace(",",""))
-                ratio=(price_next/price_now)**(1/diff)
-                next=price_now*ratio
+                price_next=float(prices[isin][current+1][1].replace(",",""))
+                ratio=(price_next/price_current)**(1/diff)
+                next=price_current*ratio
                 while diff>1:
                     #rounding only happens at output
                     modified_prices[isin].append(round(next,2))
