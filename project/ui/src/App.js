@@ -169,7 +169,7 @@ export default function AssetSelection() {
     });
     
   }
-
+  console.log(isins)
   return (
     <> 
     {/* educational link on Markowitz model */}
@@ -216,14 +216,14 @@ export default function AssetSelection() {
     </Card>}
     {feedback.frontier!==null&&<Card className={classes.root}>
       <CardContent>
-        <Typography variant="h5" component="h2" align="center" id="frontier">
-        </Typography>
+        <div variant="h5" component="h2" align="center" id="frontier">
+        </div>
       </CardContent>
     </Card>}
     {feedback.allocation!==null&&  <Card className={classes.root}>
       <CardContent>
-        <Typography variant="h5" component="h2" align="center" id="allocation">
-        </Typography>
+        <div variant="h5" component="h2" align="center" id="allocation">
+        </div>
       </CardContent>
     </Card>}
 
