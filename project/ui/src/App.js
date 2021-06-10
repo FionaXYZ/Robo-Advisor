@@ -14,6 +14,7 @@ import { green } from '@material-ui/core/colors';
 import mpld3 from 'mpld3';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ImportContactsRoundedIcon from '@material-ui/icons/ImportContactsRounded';
+// used some example components from Material-UI website to construct the web page
 
 
 function makeuidfunc(prefix){
