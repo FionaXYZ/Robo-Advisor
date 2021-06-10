@@ -96,8 +96,6 @@ ITEM_PIPELINES = {
 # all setting that start with PROJ are defiend for this FYP for Fiona
 PROJ_OUTPUT_DIR='./data'
 
-PROJ_DATE_START=''
-PROJ_DATE_END=''
 PROJ_USERINPUT_ISINS=[]
 for isin in data["isins"]:
    if isin["isin"]=="risk-free":

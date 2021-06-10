@@ -8,7 +8,6 @@
 from itemadapter import ItemAdapter
 import json
 
-# from scraper.items import FundFTID
 
 class PipelineStorage:
 
@@ -19,9 +18,6 @@ class PipelineStorage:
         self.file.close()
 
     def process_item(self, item, spider):
-        # if isinstance(item, FundFTID):
         line = json.dumps(ItemAdapter(item).asdict()) + "\n"
         self.file.write(line)
-        # else:
-        #     spider.log("xxx")
         return item

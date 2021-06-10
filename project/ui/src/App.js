@@ -14,7 +14,6 @@ import { green } from '@material-ui/core/colors';
 import mpld3 from 'mpld3';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ImportContactsRoundedIcon from '@material-ui/icons/ImportContactsRounded';
-import Link from '@material-ui/core/Link';
 
 
 function makeuidfunc(prefix){
@@ -160,10 +159,8 @@ export default function AssetSelection() {
   }
 
   const handleSubmit=(event)=>{
-    // event.preventDefault();
     Setfeedback({"max_mini":null,"frontier":null,"allocation":null});
     axios.post('http://localhost:8000/',{isins}).then((res)=>{
-      // console.log(res.data);
       Setfeedback(res.data);
       offLoading();
       mpld3.draw_figure("frontier",res.data.frontier);
@@ -171,11 +168,13 @@ export default function AssetSelection() {
     });
     
   }
-  // console.log(isins)
+
   return (
     <> 
     {/* educational link on Markowitz model */}
-    <ImportContactsRoundedIcon color="primary" fontSize="large" onClick={handleIframeOpen}></ImportContactsRoundedIcon>
+    <Button onClick={handleIframeOpen}>
+    <ImportContactsRoundedIcon color="primary" fontSize="large"></ImportContactsRoundedIcon>
+    </Button>
      <Dialog open={ifram} onClose={handleIframeClose} aria-labelledby="form-dialog-title" fullScreen="true" className={classes.root}>
     <DialogTitle>
     </DialogTitle>

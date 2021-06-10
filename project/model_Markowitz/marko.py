@@ -47,19 +47,15 @@ for datas in data["data"]:
     returns.append(datas["3_year_annalised"])
 
 # adding risk free asset to the model
-# rf=0.0045
 returns.append(rf)
 n_assets=len(returns)
 returns=np.array(returns)
 maxi=np.max(returns)
-# print(f"maximum possible return you can choose is {maxi}")
 zeros=np.array([np.zeros((n_assets-1,), dtype=int)])
 zeros_vertical=np.array([np.zeros((n_assets,),dtype=int)])
 
-
+# set targeted returns
 mini=rf
-# print(f"The possible minimum return available {mini}")
-# find the returns on efficient frontier
 target_returns=[]
 while mini<maxi:
     target_returns.append(round(mini,4))
@@ -98,7 +94,6 @@ for rate in rates:
             end=target_returns.index(target)
             target_returns=target_returns[:end]
             break
-            # res[rate]["weights"].append([np.NAN]*n_assets)
         else:
             maxi=target
             res[rate]["weights"].append(w.value)
@@ -121,7 +116,6 @@ for rate in res:
 plt.xlabel('WCW')
 plt.ylabel('returns')
 plt.legend()
-# mpld3.save_html(fig,"output/frontier.html")
 mpld3.fig_to_dict(fig)
 mpld3.save_json(fig,'output/frontier.json')
 
@@ -146,7 +140,7 @@ for ret in target_returns:
     weights_avg[ret]["min"].append(np.around(min,decimals=4))
 
 
-# new format
+# plot average weights allocation vs targeted returns 
 asset=0
 allocation=[]
 max_array=[]
@@ -171,7 +165,6 @@ for asset in range(len(allocation)):
 plt.xlabel('returns')
 plt.ylabel('weights')
 plt.legend()
-# mpld3.save_html(fig2,"output/allocation.html")
 mpld3.fig_to_dict(fig2)
 mpld3.save_json(fig2,'output/allocation.json')
 
