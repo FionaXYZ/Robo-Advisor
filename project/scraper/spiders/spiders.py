@@ -16,8 +16,6 @@ class SpiderHistoricalPrice(scrapy.Spider):
     end_date=datetime.today()
     start_date=datetime.strftime(start_date,"%Y%%2F%m%%2F%d")
     end_date=datetime.strftime(end_date,"%Y%%2F%m%%2F%d")
-    # start_date="2018%2F01%2F08"
-    # end_date="2021%2F01%2F08"
     link_format=f'https://markets.ft.com/data/equities/ajax/get-historical-prices?startDate={start_date}&endDate={end_date}&symbol='
     for data in datas:
         internal_id=data["FTID"]

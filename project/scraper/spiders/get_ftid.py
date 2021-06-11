@@ -1,10 +1,8 @@
 import scrapy
 import html 
-# import json
 import re
 import json
-# from scrapy import cmdline
-# from scraper.items import FundFTID
+
 
 #step 4 getting down financial time website id to to search for encrypted website url
 #going through the website on spiders.py
@@ -32,11 +30,6 @@ class QuotesSpider(scrapy.Spider):
             'FTID':re.search(r'xid\W+(\w*)', str).group(1)
         }
 
-        
-        # yield FundFTID(
-        #         ISIN=re.search(r'symbol\W+(\w*:\w+)', str).group(1),
-        #         FTID=re.search(r'xid\W+(\w*)', str).group(1),
-        #     )
 
 
 
