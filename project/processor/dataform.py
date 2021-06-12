@@ -107,7 +107,7 @@ for data in process:
             else:
                 data["3_year_sd"]=round(float(data_r["3_year_sd"].strip('%'))/100,4)
     for rate in rates:
-        data[f"rates_{rate}"]=rates[rate][data["ISIN"]]
+        data[f"window_{rate}"]=rates[rate][data["ISIN"]]
     
         
 output={"data":process,"meta":{"end":datetime.strftime(end,"%Y/%m/%d"),"start":datetime.strftime(start,"%Y/%m/%d")}}
