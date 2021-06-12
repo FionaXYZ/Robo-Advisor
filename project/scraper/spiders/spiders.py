@@ -9,6 +9,8 @@ datas=[json.loads(str(item)) for item in contents.strip().split('\n')]
 
 # step 5 
 # find the historical data of the stocks
+# on the ft webpage, only up to one year data can be scraped at one time
+# by finding ft id, data can be scraped according to startDate and endDate input, hence data in the past 3 year can be found at one time
 class SpiderHistoricalPrice(scrapy.Spider):
     name='historical'
     start_urls=[]
