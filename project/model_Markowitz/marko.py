@@ -106,11 +106,17 @@ with open('output/range.json','w') as outfile:
     json.dump(max_mini, outfile)
 
 
+# find the left boundary (starting from the minimum variance set)
+left=np.searchsorted(target_returns,mini)
+if left!=0:
+    left-=1
+target_returns=target_returns[left:]
 
 # plot return vs risk
 fig=plt.figure(1,figsize=(9,7))
 for rate in res:
-    WCW=res[rate]["variance"]
+    WCW=res[rate]["variance"][left:]
+    res[rate]["weights"]=res[rate]["weights"][left:]
     plt.plot(WCW, target_returns,'o',label=f'{rate}')
 
 plt.xlabel('WCW')
