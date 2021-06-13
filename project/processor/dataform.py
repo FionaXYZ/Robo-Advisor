@@ -86,7 +86,7 @@ def return_rate(modified_prices,rates,gap):
 
 
 # name of sampling 
-category=[2,5,7,10,15,20,30,60,90]
+category=[2,5,7,15,30,60,90]
 # category.append(rate_input)
 rates={key:{isin["ISIN"]:[] for isin in datas_mornid} for key in category}
 for rate in rates:
