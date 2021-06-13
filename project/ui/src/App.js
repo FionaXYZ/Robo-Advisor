@@ -104,7 +104,7 @@ export default function AssetSelection() {
     return{"isin":isin,"constraint":"None","constraint_op1":null,"deleteable":deleteable,"rate":rate,"uid":makeISINId()}
   }
 
-  const [isins,setIsins]=useState([...default_isin.map(makeDefaultIsinObjNotDeleteable),makeDefaultIsinObj('risk-free',false,0.45)])
+  const [isins,setIsins]=useState([...default_isin.map(makeDefaultIsinObjNotDeleteable),makeDefaultIsinObj('risk-free',false,0.5)])
   const [feedback,Setfeedback]=useState({"max_mini":null,"frontier":null,"allocation":null})
   const [open,setOpen]=React.useState(false);
   const [load,setLoad]=React.useState(false)
