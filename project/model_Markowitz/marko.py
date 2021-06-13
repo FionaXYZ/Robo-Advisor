@@ -119,7 +119,7 @@ for rate in res:
     res[rate]["weights"]=res[rate]["weights"][left:]
     plt.plot(WCW, target_returns,'o',label=f'{rate}')
 
-plt.xlabel('WCW')
+plt.xlabel('risk')
 plt.ylabel('returns')
 plt.legend()
 mpld3.fig_to_dict(fig)
